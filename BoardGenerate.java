@@ -14,7 +14,6 @@ public class BoardGenerate /*extends MainActivity*/ {
     static Mine[][] generateBoard(Mine[][]arr, int totalMines, int x, int y){
         int minesInPlay = 0;
         int x1, y1;
-        int adjMines = 0;
         Random rand = new Random();
         // Initialize everything to blank
         for (int i = 0;  i < x; i++){
@@ -171,15 +170,83 @@ public class BoardGenerate /*extends MainActivity*/ {
         }// End of right column       
         
         
-        
+        // Go from Top left to bottom left
+        y1 = 0;
+        for (int i = 1; i < x-1; i++){
+            //Check if it isn't a mine
+            if (arr[i][y1].value != -1){
+                //Check up
+                if (arr[i-1][y1].value == -1){
+                    arr[i][y1].value++;
+                }
+                //Check up right
+                if (arr[i-1][y1+1].value == -1){
+                    arr[i][y1].value++;
+                }
+                //Check right
+                if (arr[i][y1+1].value == -1){
+                    arr[i][y1].value++;
+                }
+                //Check down rightt
+                if (arr[i+1][y1+1].value == -1){
+                    arr[i][y1].value++;
+                }
+                //Check down
+                if (arr[i+1][y1].value == -1){
+                    arr[i][y1].value++;
+                }
+            } 
+        }// End of left column
 
-        for (int i = 0;  i < x; i++){
-            for (int j = 0; j < y; j++){
-                adjMines = 0;
+       //Edge Case Bottom left, do check if it isn't a mine
+        x1 = x-1;
+        y1 = 0;
+        if (arr[x1][y1].value != -1){
+            // right
+            if (arr[x1][y1+1].value == -1){
+                arr[x1][y1].value++;
+            }
+            // up right
+            if (arr[x1-1][y1+1].value == -1){
+                arr[x1][y1].value++;
+            }
+            // up
+            if (arr[x1-1][y1].value == -1){
+                arr[x1][y1].value++;
+            }        
+        }
+        // End of all Edge Cases
+        // Loop through the rest of the board
+        for (int i = 1;  i < x-1; i++){
+            for (int j = 1; j < y-1; j++){
 
                 if (arr[i][j].value != -1){
-
-
+                    //Up
+                    if (arr[i-1][j].value == -1){
+                        arr[i][j].value++;
+                    }//Up right
+                    if (arr[i-1][j+1].value == -1){
+                        arr[i][j].value++;
+                    }//Right
+                    if (arr[i][j+1].value == -1){
+                        arr[i][j].value++;
+                    }//Down right
+                    if (arr[i+1][j+1].value == -1){
+                        arr[i][j].value++;
+                    }//Down
+                    if (arr[i+1][j].value == -1){
+                        arr[i][j].value++;
+                    }//Down left
+                    if (arr[i+1][j-1].value == -1){
+                        arr[i][j].value++;
+                    }//Left
+                    if (arr[i][j-1].value == -1){
+                        arr[i][j].value++;
+                    }//Up left
+                    if (arr[i-1][j-1].value == -1){
+                        arr[i][j].value++;
+                    }
+                
 
                 }
             }
@@ -192,7 +259,7 @@ public class BoardGenerate /*extends MainActivity*/ {
     public static void main(String []args){
         int x = 8;
         int y = 10;
-        int numMines = 20;
+        int numMines = 10;
          
         Mine[][] mineList = new Mine[x][y];
         mineList = generateBoard(mineList, numMines, x, y);
