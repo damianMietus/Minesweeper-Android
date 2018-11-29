@@ -12,6 +12,9 @@ import static android.graphics.Color.TRANSPARENT;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button[][] buttons = new Button[8][8];
+    //private board[][] Mine = new Mine[8][8];
+    BoardGenerate.Mine[][] board = new BoardGenerate.Mine[8][8];
+
 
     private int mineCount;
     private TextView textViewPlayer;
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        board = BoardGenerate.generateBoard(board, 12, 8, 8);
+        String str1 = null;
+
         textViewPlayer = findViewById(R.id.text_view_p1);
 
         for (int i = 0; i < 8; i++){
@@ -29,6 +35,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
                 buttons[i][j] = findViewById(resID);
                 buttons[i][j].setOnClickListener(this);
+
+                str1 = String.valueOf(board[i][j].value);
+                if (str1.equals("-1")){
+                    str1 = "X";
+                }
+
+                //buttons[i][j].setText(str1);
+                buttons[i][j].setTag(board[i][j].value);
+
+
             }
         }
 
@@ -43,12 +59,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        /*
         if (!((Button) v).getText().toString().equals("")){
+
             return;
         }
+           */
+        //String str2 = ((Button) v).getTag();
+        ((Button) v).setText((((Button) v).getTag()).toString() );
 
-        ((Button) v).setText("x");
         ((Button) v).setBackgroundColor(TRANSPARENT);
+
+
 
         textViewPlayer.setText("Remaining Mines: 0");
 
